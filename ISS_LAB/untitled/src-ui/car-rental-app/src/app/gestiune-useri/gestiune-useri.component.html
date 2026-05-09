@@ -1,0 +1,63 @@
+<div class="container">
+  <h2>Gestiune Utilizatori</h2>
+
+  <!-- Tabel pentru afisarea utilizatorilor -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Rol/Tip</th>
+          <th>Actiuni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of utilizatori">
+          <td>{{ user.id }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.rol || user.type || 'N/A' }}</td>
+          <td>
+            <button class="btn-edit" (click)="editUtilizator(user)">Editeaza</button>
+            <button class="btn-delete" (click)="deleteUtilizator(user.id)">Sterge</button>
+          </td>
+        </tr>
+        <tr *ngIf="utilizatori.length === 0">
+          <td colspan="4" style="text-align: center;">Nu exista utilizatori in baza de date.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formular pentru adaugare/editare utilizatori -->
+  <div class="form-container">
+    <h3>{{ editMode ? 'Editeaza Utilizator' : 'Adauga Utilizator Nou' }}</h3>
+    <form [formGroup]="utilizatorForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email">
+      </div>
+
+      <div class="form-group">
+        <label for="parola">Parola:</label>
+        <input type="password" id="parola" formControlName="parola">
+      </div>
+
+      <div class="form-group">
+        <label for="type">Tip Utilizator:</label>
+        <select id="type" formControlName="type">
+          <option value="CLIENT">Client</option>
+          <option value="ANGAJAT">Angajat</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-save" [disabled]="!utilizatorForm.valid">
+          {{ editMode ? 'Actualizeaza' : 'Salveaza' }}
+        </button>
+        <button type="button" class="btn-cancel" *ngIf="editMode" (click)="resetForm()">Anuleaza</button>
+      </div>
+    </form>
+  </div>
+</div>

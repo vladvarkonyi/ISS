@@ -1,0 +1,76 @@
+<div class="container">
+  <h2>Gestiune Masini</h2>
+
+  <!-- Tabel pentru afisarea masinilor -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Marca</th>
+          <th>Model</th>
+          <th>An</th>
+          <th>Pret/Zi</th>
+          <th>Status</th>
+          <th>Actiuni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let masina of masini">
+          <td>{{ masina.marca }}</td>
+          <td>{{ masina.model }}</td>
+          <td>{{ masina.an }}</td>
+          <td>{{ masina.pretPeZi }} RON</td>
+          <td>{{ masina.statusDisponibilitate }}</td>
+          <td>
+            <button class="btn-edit" (click)="editMasina(masina)">Editeaza</button>
+            <button class="btn-delete" (click)="deleteMasina(masina.id)">Sterge</button>
+          </td>
+        </tr>
+        <tr *ngIf="masini.length === 0">
+          <td colspan="6" style="text-align: center;">Nu exista masini in baza de date.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formular pentru adaugare/editare masini -->
+  <div class="form-container">
+    <h3>{{ editMode ? 'Editeaza Masina' : 'Adauga o Masina Noua' }}</h3>
+    <form [formGroup]="masinaForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="marca">Marca:</label>
+        <input id="marca" formControlName="marca">
+      </div>
+      <div class="form-group">
+        <label for="model">Model:</label>
+        <input id="model" formControlName="model">
+      </div>
+      <div class="form-group">
+        <label for="an">An Fabricatie:</label>
+        <input id="an" type="number" formControlName="an">
+      </div>
+      <div class="form-group">
+        <label for="pretPeZi">Pret pe Zi (RON):</label>
+        <input id="pretPeZi" type="number" formControlName="pretPeZi">
+      </div>
+      <div class="form-group">
+        <label for="imagineUrl">URL Imagine:</label>
+        <input id="imagineUrl" formControlName="imagineUrl">
+      </div>
+      <div class="form-group">
+        <label for="statusDisponibilitate">Status:</label>
+        <select id="statusDisponibilitate" formControlName="statusDisponibilitate">
+          <option value="Disponibil">Disponibil</option>
+          <option value="Inchiriat">Inchiriat</option>
+          <option value="In Mentenanta">In Mentenanta</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-save" [disabled]="!masinaForm.valid">
+          {{ editMode ? 'Actualizeaza' : 'Adauga Masina' }}
+        </button>
+        <button type="button" class="btn-cancel" *ngIf="editMode" (click)="resetForm()">Anuleaza</button>
+      </div>
+    </form>
+  </div>
+</div>
